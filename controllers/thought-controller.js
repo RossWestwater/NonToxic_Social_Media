@@ -55,14 +55,14 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
 
-  addReaction({ params }, res) {
-    Thought.findByIdAndUpdate({ _id: params.thoughtId }, {$addToSet: {reactions: params.friendId } }, {new: true, runValidators: true })
+  addReaction({ params, body }, res) {
+    Thought.findByIdAndUpdate({ _id: params.thoughtId }, {$addToSet: {reactions: body } }, {new: true, runValidators: true })
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.json(err));
   },
 
   deleteReaction({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.thoughtId }, {$pull: {reactions: params.friendId } }, { new: true} )
+    Thought.findByIdAndUpdate({ _id: params.thoughtId }, {$pull: {reactions: {reactionId: params.reactionId} } }, { new: true} )
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.json(err));
   }
